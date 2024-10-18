@@ -1,3 +1,15 @@
+# Ignorer les fichiers de dépendances Node.js
 node_modules/
-pnpm-lock.yaml
+frontend/node_modules/
+
+# Ignorer les fichiers de configuration de l'IDE
+.vscode
+.idea
+
+# Ignorer les fichiers temporaires
+*.log
+*.tmp
+*.swp
+
+# Ignorer le dossier de données
 data/
