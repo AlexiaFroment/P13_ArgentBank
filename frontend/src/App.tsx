@@ -1,12 +1,12 @@
-import { Home } from "@/pages/public/Home"
+import { BrowserRouter, Routes, Route } from "react-router-dom"
+import { PublicRouter } from "@/routes/PublicRouter"
 
-function App() {
+export const App: React.FC = () => {
   return (
-    <h1 className='text-3xl font-bold text-red-200'>
-      Hello world!
-      <Home />
-    </h1>
+    <BrowserRouter>
+      <Routes>
+        <Route path='/' element={<PublicRouter />} />
+      </Routes>
+    </BrowserRouter>
   )
 }
-
-export default App
