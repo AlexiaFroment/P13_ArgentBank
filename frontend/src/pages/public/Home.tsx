@@ -7,7 +7,7 @@ export const Home: React.FC = () => {
   return (
     <section>
       <HeroSection />
-      <div className='container py-14 mx-auto flex flex-col items-center md:flex-row '>
+      <div className='container py-8 mx-auto flex flex-col items-center md:flex-row '>
         <Btn
           img={Chat}
           title='You are our #1 priority'

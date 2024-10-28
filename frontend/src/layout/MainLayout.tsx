@@ -3,9 +3,9 @@ import { Nav } from "@/layout/Nav"
 import { Footer } from "@/layout/Footer"
 export const MainLayout: React.FC = () => {
   return (
-    <div>
+    <div className='flex flex-col min-h-screen'>
       <Nav />
-      <main>
+      <main className='flex-grow flex flex-col'>
         <Outlet />
       </main>
       <Footer />
