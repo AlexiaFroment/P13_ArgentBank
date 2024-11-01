@@ -1,8 +1,7 @@
 import { Routes, Route } from "react-router-dom"
 
 import { MainLayout } from "@/layout/MainLayout"
-import { Home } from "@/pages/public/Home"
-import { SignIn } from "@/pages/public/SignIn"
+import { Home, SignIn } from "@/pages/public/index"
 import { NotFound } from "@/pages/NotFound"
 
 export const PublicRouter: React.FC = () => {

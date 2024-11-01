@@ -3,7 +3,7 @@ import { IoPersonCircleSharp } from "react-icons/io5"
 export const SignIn: React.FC = () => {
   const navigate = useNavigate()
   const handleSignIn = () => {
-    navigate("/auth/welcome")
+    navigate("/auth/welcome/user")
   }
   return (
     <section className='flex-grow bg-blue-950 p-10 '>
