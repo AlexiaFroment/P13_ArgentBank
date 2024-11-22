@@ -8,7 +8,7 @@ services:
     depends_on:
       - mongo
     environment:
-      DATABASE_URL: "mongodb://mongo/argentBankDB" # Use the service name 'mongo' as the hostname
+      DATABASE_URL: "${DATABASE_URL}"
 
   # MongoDB service
   mongo:

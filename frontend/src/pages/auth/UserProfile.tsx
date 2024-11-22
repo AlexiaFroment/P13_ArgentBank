@@ -2,7 +2,7 @@
 
 import AccountsJson from "@/data/dataBank.json"
 import { Account } from "@/models/Interface"
-export const Welcome: React.FC = () => {
+export const UserProfile: React.FC = () => {
   return (
     <section className='flex-grow bg-blue-950 '>
       <div className='text-center text-white p-5'>

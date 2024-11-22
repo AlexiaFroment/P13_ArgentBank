@@ -1,6 +1,11 @@
 import { NavLink } from "react-router-dom"
 import Logo from "@/assets/img/argentBankLogo.png"
-import { IoPersonCircleSharp } from "react-icons/io5"
+
+import { SignIn } from "@/components/SignIn"
+import { SignOut } from "@/components/SignOut"
+
+import { userService } from "@/_services/userService"
+
 export const Nav: React.FC = () => {
   return (
     <nav className='main-nav'>
@@ -10,12 +15,7 @@ export const Nav: React.FC = () => {
             <img src={Logo} alt='Argent Bank Logo' className='w-[200px]' />
           </NavLink>
         </li>
-        <li className=' px-5'>
-          <NavLink to='/signin' className='flex items-center font-bold px-1'>
-            <IoPersonCircleSharp className='text-xl mr-1' />
-            Sign In
-          </NavLink>
-        </li>
+        {userService.isLogged() ? <SignOut /> : <SignIn />}
       </ul>
     </nav>
   )

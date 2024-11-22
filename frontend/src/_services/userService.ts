@@ -1,15 +1,31 @@
-import data from "@/data/dataBank.json"
-import { User } from "@/models/Interface"
-const getAllUsers = (): User[] => {
-  return data as User[]
+import { Credentials } from "@/models/Interface"
+import { Axios } from "./callerService"
+
+const login = async (data: Credentials) => {
+  return Axios.post("/api/v1/user/login", data)
 }
 
-const getOneUser = async (id: string): Promise<User | undefined> => {
-  const user = data.find((user) => user.id === id)
-  return user
+const logout = () => {
+  localStorage.removeItem("token")
+}
+
+const getToken = () => {
+  return localStorage.getItem("token")
+}
+
+const saveToken = (token: string) => {
+  localStorage.setItem("token", token)
+}
+
+const isLogged = () => {
+  const token = localStorage.getItem("token")
+  return !!token
 }
 
 export const userService = {
-  getAllUsers,
-  getOneUser,
+  login,
+  logout,
+  getToken,
+  saveToken,
+  isLogged,
 }
