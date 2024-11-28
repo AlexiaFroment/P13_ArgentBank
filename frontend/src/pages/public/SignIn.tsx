@@ -2,8 +2,9 @@ import { useNavigate } from "react-router-dom"
 import { Formik, Form, Field, ErrorMessage } from "formik"
 import * as Yup from "yup"
 
-import { userService } from "@/_services/userService"
-import { Credentials } from "@/models/Interface"
+import { authService } from "@/_services"
+import { userService } from "@/_services"
+import { Credentials } from "@/_interfaces/Interface"
 import { IoPersonCircleSharp } from "react-icons/io5"
 
 export const SignIn: React.FC = () => {
@@ -22,14 +23,15 @@ export const SignIn: React.FC = () => {
   })
 
   const onSubmit = (data: Credentials) => {
-    userService
+    authService
       .login(data)
       .then((response) => {
         const token = response.data.body.token
-        userService.saveToken(token)
+        authService.saveToken(token)
         console.log(
           "tu es authentifié tu vas ouvrir les portes du paraids, well done"
         )
+        userService.getUser(token)
         navigate(`/auth/user-profile`)
       })
       .catch((error) => {

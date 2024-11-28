@@ -4,7 +4,7 @@ import Logo from "@/assets/img/argentBankLogo.png"
 import { SignIn } from "@/components/SignIn"
 import { SignOut } from "@/components/SignOut"
 
-import { userService } from "@/_services/userService"
+import { authService } from "@/_services"
 
 export const Nav: React.FC = () => {
   return (
@@ -15,7 +15,7 @@ export const Nav: React.FC = () => {
             <img src={Logo} alt='Argent Bank Logo' className='w-[200px]' />
           </NavLink>
         </li>
-        {userService.isLogged() ? <SignOut /> : <SignIn />}
+        {authService.isLogged() ? <SignOut /> : <SignIn />}
       </ul>
     </nav>
   )

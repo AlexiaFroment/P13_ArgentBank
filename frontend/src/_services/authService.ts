@@ -1,8 +1,8 @@
-import { Credentials } from "@/models/Interface"
+import { Credentials } from "@/_interfaces/Interface"
 import { Axios } from "./callerService"
 
 const login = async (data: Credentials) => {
-  return Axios.post("/api/v1/user/login", data)
+  return Axios.post("/login", data)
 }
 
 const logout = () => {
@@ -22,7 +22,7 @@ const isLogged = () => {
   return !!token
 }
 
-export const userService = {
+export const authService = {
   login,
   logout,
   getToken,

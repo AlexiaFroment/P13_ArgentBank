@@ -2,12 +2,12 @@ import { useNavigate } from "react-router-dom"
 import { FaSignOutAlt } from "react-icons/fa"
 import { IoPersonCircleSharp } from "react-icons/io5"
 
-import { userService } from "@/_services/userService"
+import { authService } from "@/_services"
 
 export const SignOut: React.FC = () => {
   const navigate = useNavigate()
   const logout = () => {
-    userService.logout()
+    authService.logout()
     navigate("/home")
   }
   return (
