@@ -1,29 +1,18 @@
-import { useEffect } from "react"
+import { useSelector } from "react-redux"
 
-import { useDispatch, useSelector } from "react-redux"
 import { RootState } from "@/_redux/store"
-import { setUser } from "@/_redux/userSlice"
 import { Identity } from "@/components/Identity"
-
 import AccountsJson from "@/data/dataBank.json"
 import { Account } from "@/_interfaces/Interface"
-export const UserProfile: React.FC = () => {
-  const dispatch = useDispatch()
-  const user = useSelector((state: RootState) => state.user)
 
-  useEffect(() => {
-    const userData = {
-      firstName: "Pomme",
-      lastName: "De Terre",
-    }
-    dispatch(setUser(userData))
-  }, [dispatch])
+export const UserProfile: React.FC = () => {
+  const { firstName, lastName } = useSelector((state: RootState) => state.user)
 
   return (
     <section className='flex-grow bg-blue-950 '>
       <div className='text-center text-white p-5'>
         <h1 className='text-3xl font-bold'>Welcome back</h1>
-        <Identity firstName={user.firstName} lastName={user.lastName} />
+        <Identity firstName={firstName} lastName={lastName} />
         <button className='max-w-24 bg-green-600 p-2 mt-3'>Edit Name</button>
       </div>
       <div>

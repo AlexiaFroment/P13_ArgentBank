@@ -1,13 +1,17 @@
 import { useNavigate } from "react-router-dom"
 import { Formik, Form, Field, ErrorMessage } from "formik"
 import * as Yup from "yup"
+import { useDispatch } from "react-redux"
 
+import { AppDispatch } from "@/_redux/store"
+import { setUser } from "@/_redux/userSlice"
 import { authService } from "@/_services"
 import { userService } from "@/_services"
 import { Credentials } from "@/_interfaces/Interface"
 import { IoPersonCircleSharp } from "react-icons/io5"
 
 export const SignIn: React.FC = () => {
+  const dispatch = useDispatch<AppDispatch>()
   const navigate = useNavigate()
 
   const initialValues = {
@@ -28,10 +32,15 @@ export const SignIn: React.FC = () => {
       .then((response) => {
         const token = response.data.body.token
         authService.saveToken(token)
-        console.log(
-          "tu es authentifié tu vas ouvrir les portes du paraids, well done"
-        )
-        userService.getUser(token)
+        userService.getUser(token).then((user) => {
+          //UPDATE STORE WITH GET DATA
+          dispatch(
+            setUser({
+              firstName: user.firstName,
+              lastName: user.lastName,
+            })
+          )
+        })
         navigate(`/auth/user-profile`)
       })
       .catch((error) => {
@@ -39,29 +48,6 @@ export const SignIn: React.FC = () => {
         console.log(error)
       })
   }
-
-  // const onSubmit = async (data: Credentials) => {
-  //   try {
-  //     userService
-  //       .login(data)
-  //       .then((response) => {
-  //         const token = response.data.body.token
-  //         userService.saveToken(token)
-  //         console.log(
-  //           "tu es authentifié tu vas ouvrir les portes du paraids, well done"
-  //         )
-  //         navigate(`/auth/user-profile`)
-  //       })
-  //       .catch((error) => {
-  //         console.log("tu n'es pas authentifié, game over")
-  //         console.log(error)
-  //       })
-  //   } catch (error) {
-  //     console.log(error)
-  //   }
-
-  //   // const user = await userService.login(data)
-  // }
 
   return (
     <section className='flex-grow bg-blue-950 p-10'>
