@@ -10,6 +10,11 @@ import { userService } from "@/_services"
 import { Credentials } from "@/_interfaces/Interface"
 import { IoPersonCircleSharp } from "react-icons/io5"
 
+type SignInFormData = {
+  email: string
+  password: string
+  rememberMe: boolean
+}
 export const SignIn: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>()
   const navigate = useNavigate()
@@ -17,6 +22,7 @@ export const SignIn: React.FC = () => {
   const initialValues = {
     email: "tony@stark.com",
     password: "password123",
+    rememberMe: false,
   }
 
   const validationSchema = Yup.object().shape({
@@ -26,22 +32,28 @@ export const SignIn: React.FC = () => {
     password: Yup.string().required("Veuillez entrer un mot de passe"),
   })
 
-  const onSubmit = (data: Credentials) => {
+  const onSubmit = (data: SignInFormData) => {
+    console.log("etat de rememberMe", data.rememberMe)
+    const credentials: Credentials = {
+      email: data.email,
+      password: data.password,
+    }
     authService
-      .login(data)
+      .login(credentials, data.rememberMe)
       .then((response) => {
         const token = response.data.body.token
-        authService.saveToken(token)
-        userService.getUser(token).then((user) => {
-          //UPDATE STORE WITH GET DATA
-          dispatch(
-            setUser({
-              firstName: user.firstName,
-              lastName: user.lastName,
-            })
-          )
-        })
-        navigate(`/auth/user-profile`)
+        if (token) {
+          userService.getUser(token).then((user) => {
+            //UPDATE STORE WITH GET DATA
+            dispatch(
+              setUser({
+                firstName: user.firstName,
+                lastName: user.lastName,
+              })
+            )
+          })
+          navigate(`/auth/user-profile`)
+        }
       })
       .catch((error) => {
         console.log("tu n'es pas authentifié, game over")
@@ -56,60 +68,67 @@ export const SignIn: React.FC = () => {
           <IoPersonCircleSharp />
           <h2 className='pt-3'>Sign In</h2>
         </div>
+
         <Formik
           initialValues={initialValues}
           onSubmit={onSubmit}
           validationSchema={validationSchema}>
-          <Form>
-            <div className='mb-5'>
-              <label htmlFor='email' className='font-semibold'>
-                Username
-              </label>
-              <Field
-                name='email'
-                type='email'
-                className='w-full px-3 py-2 border rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-950'
-                autoComplete='off'></Field>
-              <ErrorMessage
-                name='email'
-                component='p'
-                className='errorMessage'
-              />
-            </div>
+          {({ values }) => (
+            <Form>
+              <div className='mb-5'>
+                <label htmlFor='email' className='font-semibold'>
+                  Username
+                </label>
+                <Field
+                  name='email'
+                  type='email'
+                  className='w-full px-3 py-2 border rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-950'
+                  autoComplete='off'
+                />
+                <ErrorMessage
+                  name='email'
+                  component='p'
+                  className='errorMessage'
+                />
+              </div>
 
-            <div className=' mb-5'>
-              <label htmlFor='password' className='font-semibold'>
-                Password
-              </label>
-              <Field
-                name='password'
-                type='password'
-                className='w-full px-3 py-2 border rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-950'
-                autoComplete='off'></Field>
-              <ErrorMessage
-                name='password'
-                component='p'
-                className='errorMessage'
-              />
-            </div>
+              <div className=' mb-5'>
+                <label htmlFor='password' className='font-semibold'>
+                  Password
+                </label>
+                <Field
+                  name='password'
+                  type='password'
+                  className='w-full px-3 py-2 border rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-950'
+                  autoComplete='off'
+                />
+                <ErrorMessage
+                  name='password'
+                  component='p'
+                  className='errorMessage'
+                />
+              </div>
 
-            <div>
-              <input
-                type='checkbox'
-                id='remember-me'
-                className=' h-3 w-3 appearance-none border border-gray-400 rounded-sm  accent-blue-950  '
-              />
-              <label htmlFor='remember-me' className='text-gray-500 pl-2'>
-                Remember me
-              </label>
-            </div>
+              <div>
+                <Field
+                  type='checkbox'
+                  id='remember-me'
+                  name='rememberMe'
+                  checked={values.rememberMe}
+                  className='h-4 w-4 border-gray-300 rounded-sm focus:ring-2 focus:ring-blue-500 checked:bg-blue-500 checked:border-blue-500 peer'
+                />
+                <label htmlFor='remember-me' className='text-gray-500 pl-2'>
+                  Remember me
+                </label>
+              </div>
 
-            <button
-              className='w-full py-2  my-7 bg-green-600 text-white font-semibold rounded-sm '
-              type='submit'>
-              Sign In
-            </button>
-          </Form>
+              <button
+                className='w-full py-2  my-7 bg-green-600 text-white font-semibold rounded-sm '
+                type='submit'>
+                Sign In
+              </button>
+            </Form>
+          )}
         </Formik>
       </div>
     </section>
