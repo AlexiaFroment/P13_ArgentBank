@@ -5,7 +5,7 @@ const login = async (data: Credentials, rememberMe: boolean) => {
   try {
     const resp = await Axios.post("/login", data)
     const token = resp.data.body.token
-    saveToken(token, rememberMe)
+    saveUserData(token, data.email, rememberMe)
     return resp
   } catch {
     throw new Error("Login failed")
@@ -22,11 +22,20 @@ const getToken = () => {
   return token
 }
 
-const saveToken = (token: string, rememberMe: boolean) => {
+const getEmail = () => {
+  const email = localStorage.getItem("email")
+  return email
+}
+
+const saveUserData = (token: string, email: string, rememberMe: boolean) => {
   if (rememberMe) {
     localStorage.setItem("token", token)
+    localStorage.setItem("email", email)
+    console.log("token & email sont dans le localStorage")
   } else {
+    localStorage.removeItem("email")
     sessionStorage.setItem("token", token)
+    console.log("token dans le session storage")
   }
 }
 
@@ -39,6 +48,7 @@ export const authService = {
   login,
   logout,
   getToken,
-  saveToken,
+  getEmail,
+  saveUserData,
   isLogged,
 }

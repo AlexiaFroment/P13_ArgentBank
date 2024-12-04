@@ -19,10 +19,14 @@ export const SignIn: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>()
   const navigate = useNavigate()
 
-  const initialValues = {
-    email: "tony@stark.com",
-    password: "password123",
-    rememberMe: false,
+  const getInitialValues = (): SignInFormData => {
+    const email = localStorage.getItem("email") || ""
+    const rememberMe = !!localStorage.getItem("email")
+    return {
+      email,
+      password: "",
+      rememberMe,
+    }
   }
 
   const validationSchema = Yup.object().shape({
@@ -70,7 +74,7 @@ export const SignIn: React.FC = () => {
         </div>
 
         <Formik
-          initialValues={initialValues}
+          initialValues={getInitialValues()}
           onSubmit={onSubmit}
           validationSchema={validationSchema}>
           {({ values }) => (

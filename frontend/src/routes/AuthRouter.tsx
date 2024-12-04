@@ -2,6 +2,7 @@ import { Routes, Route } from "react-router-dom"
 import { MainLayout } from "@/layout/MainLayout"
 import { UserProfile } from "@/pages/auth/index"
 import { NotFound } from "@/pages/NotFound"
+
 export const AuthRouter: React.FC = () => {
   return (
     <Routes>
