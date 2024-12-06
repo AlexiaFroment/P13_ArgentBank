@@ -4,6 +4,7 @@ const userController = require("../controllers/userController")
 const tokenValidation = require("../middleware/tokenValidation")
 
 router.get("/ping", userController.ping)
+router.get("/allusers", userController.getAllUsers)
 router.post("/signup", userController.createUser)
 
 router.post("/login", userController.loginUser)

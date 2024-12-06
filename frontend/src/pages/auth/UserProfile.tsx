@@ -1,20 +1,50 @@
 import { useState } from "react"
-import { useSelector } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 
 import { RootState } from "@/_redux/store"
+import { setUser } from "@/_redux/userSlice"
 import { Identity } from "@/components/Identity"
 import AccountsJson from "@/data/dataBank.json"
 import { Account } from "@/_interfaces/Interface"
+import { userService } from "@/_services"
 
 export const UserProfile: React.FC = () => {
+  const dispatch = useDispatch()
   const { firstName, lastName } = useSelector((state: RootState) => state.user)
+  const [credentials, setCredentials] = useState({
+    firstName: "",
+    lastName: "",
+  })
   const [isEditing, setIsEditing] = useState(false)
 
   const handleEditClick = () => {
     setIsEditing(true)
   }
-  const handleSaveOrCancelClick = () => {
+  const handleSaveClick = async () => {
+    const updateFirstName =
+      credentials.firstName !== "" ? credentials.firstName : firstName
+
+    const updateLastName =
+      credentials.lastName !== "" ? credentials.lastName : lastName
+    dispatch(
+      setUser({
+        firstName: updateFirstName,
+        lastName: updateLastName,
+      })
+    )
+    await userService.updateUser({
+      firstName: updateFirstName,
+      lastName: updateLastName,
+    })
     setIsEditing(false)
+  }
+  const handleCancelClick = () => {
+    setCredentials({ firstName, lastName })
+    setIsEditing(false)
+  }
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = event.target
+    setCredentials((prev) => ({ ...prev, [name]: value }))
   }
 
   return (
@@ -40,23 +70,29 @@ export const UserProfile: React.FC = () => {
             <input
               type='text'
               placeholder={firstName}
-              className='border border-gray-400 rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-green-600'
+              name='firstName'
+              value={credentials.firstName}
+              onChange={handleChange}
+              className='border text-black border-gray-400 rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-green-600'
             />
             <input
               type='text'
               placeholder={lastName}
-              className='border border-gray-400 rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-green-600'
+              name='lastName'
+              value={credentials.lastName}
+              onChange={handleChange}
+              className='border text-black border-gray-400 rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-green-600'
             />
           </div>
           <div className='flex justify-center gap-2'>
             <button
               className='min-w-28 text-green-600 px-2 py-1 bg-white p-2 mt-3 border border-green-600 rounded focus:outline-none focus:ring-2 focus:ring-green-600'
-              onClick={handleSaveOrCancelClick}>
+              onClick={handleSaveClick}>
               Save
             </button>
             <button
               className='min-w-28 text-green-600 px-2 py-1 bg-white p-2 mt-3 border border-green-600 rounded focus:outline-none focus:ring-2 focus:ring-green-600'
-              onClick={handleSaveOrCancelClick}>
+              onClick={handleCancelClick}>
               Cancel
             </button>
           </div>

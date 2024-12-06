@@ -3,6 +3,25 @@ const userService = require("../services/userService")
 module.exports.ping = (req, res) => {
   res.send("pong")
 }
+
+module.exports.getAllUsers = async (req, res) => {
+  let response = {}
+  console.log("Route /allusers hit")
+
+  try {
+    const responseFromService = await userService.getAllUsers()
+    response.status = 200
+    response.message = "Successfully fetched all users"
+    response.body = responseFromService
+  } catch (error) {
+    console.log("Error in getAllUsers - userController.js")
+    response.status = 400
+    response.message = error.message
+  }
+
+  return res.status(response.status).send(response)
+}
+
 module.exports.createUser = async (req, res) => {
   let response = {}
 

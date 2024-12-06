@@ -2,6 +2,15 @@ const User = require("../database/models/userModel")
 const bcrypt = require("bcrypt")
 const jwt = require("jsonwebtoken")
 
+module.exports.getAllUsers = async () => {
+  try {
+    console.log("Fetching all users...")
+    const users = await User.find() // Ou la méthode appropriée pour récupérer les utilisateurs
+    return users
+  } catch (error) {
+    throw new Error("Failed to fetch users: " + error.message)
+  }
+}
 module.exports.createUser = async (serviceData) => {
   try {
     const user = await User.findOne({ email: serviceData.email })
