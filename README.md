@@ -1,72 +1,30 @@
-# Project #10 - Argent Bank API
+Guide d'installation du projet
 
-This codebase contains the code needed to run the backend for Argent Bank.
+Bienvenue dans le projet Argent Bank !
+Voici les instructions pour configurer et exécuter l'application en utilisant Docker.
 
-## Getting Started
+Prérequis :
+Avant de commencer, assurez-vous d'avoir installé les outils suivants :
+Docker
+Docker Compose (selon les systèmes d'exploitation peut-être inclus par défaut avec la mise en place de Docker - Vous pouvez vérifier votre version avec la commande => docker-compose --version )
+Un accès au repository du projet
 
-### Prerequisites
+Étapes d'installation :
+1_Cloner le repository :
+git clone https://github.com/AlexiaFroment/P13_ArgentBank
 
-Argent Bank uses the following tech stack:
+2_Ouvrir Docker Desktop
 
-- [Node.js v12](https://nodejs.org/en/)
-- [MongoDB Community Server](https://www.mongodb.com/try/download/community)
+3_Se positionner à la racine du projet : cd P13_ArgentBank
 
-Please make sure you have the right versions and download both packages. You can verify this by using the following commands in your terminal:
+4_Lancer l'application avec Docker Compose :
+docker-compose up --build
 
-```bash
-# Check Node.js version
-node --version
+5_Accéder à l'application :
+Une fois les conteneurs démarrés (les 3 vont se lancer en même temps, Mongo, Backend, Frontend)
+Ouvrez votre navigateur et accèdez à l'URL indiquée dans les logs => http://localhost:5173/
 
-# Check Mongo version
-mongo --version
-```
-
-### Instructions
-
-1. Fork this repo
-1. Clone the repo onto your computer
-1. Open a terminal window in the cloned project
-1. Run the following commands:
-
-```bash
-# Install dependencies
-npm install
-
-# Start local dev server
-npm run dev:server
-
-# Populate database with two users
-npm run populate-db
-```
-
-Your server should now be running at http://locahost:3001 and you will now have two users in your MongoDB database!
-
-## Populated Database Data
-
-Once you run the `populate-db` script, you should have two users in your database:
-
-### Tony Stark
-
-- First Name: `Tony`
-- Last Name: `Stark`
-- Email: `tony@stark.com`
-- Password: `password123`
-
-### Steve Rogers
-
-- First Name: `Steve`,
-- Last Name: `Rogers`,
-- Email: `steve@rogers.com`,
-- Password: `password456`
-
-## API Documentation
-
-To learn more about how the API works, once you have started your local environment, you can visit: http://localhost:3001/api-docs
-
-## Design Assets
-
-Static HTML and CSS has been created for most of the site and is located in: `/designs`.
-
-For some of the dynamic features, like toggling user editing, there is a mock-up for it in `/designs/wireframes/edit-user-name.png`.
-
-And for the API model that you will be proposing for transactitons, the wireframe can be found in `/designs/wireframes/transactions.png`.
+Notes supplémentaires :
+Vous pouvez tester la connexion à l'application avec :
+Username : tony@stark.com
+Password : password123

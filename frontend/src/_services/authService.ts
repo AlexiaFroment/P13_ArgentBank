@@ -4,7 +4,9 @@ import { Axios } from "./callerService"
 const login = async (data: Credentials, rememberMe: boolean) => {
   try {
     const resp = await Axios.post("/login", data)
+
     const token = resp.data.body.token
+
     saveUserData(token, data.email, rememberMe)
     return resp
   } catch {

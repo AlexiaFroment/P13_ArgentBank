@@ -9,6 +9,7 @@ import { authService } from "@/_services"
 import { userService } from "@/_services"
 import { Credentials } from "@/_interfaces/Interface"
 import { IoPersonCircleSharp } from "react-icons/io5"
+import { useState } from "react"
 
 type SignInFormData = {
   email: string
@@ -16,6 +17,7 @@ type SignInFormData = {
   rememberMe: boolean
 }
 export const SignIn: React.FC = () => {
+  const [message, setMessage] = useState("")
   const dispatch = useDispatch<AppDispatch>()
   const navigate = useNavigate()
 
@@ -45,22 +47,25 @@ export const SignIn: React.FC = () => {
     authService
       .login(credentials, data.rememberMe)
       .then((response) => {
-        const token = response.data.body.token
-        if (token) {
-          userService.getUser(token).then((user) => {
-            //UPDATE STORE WITH GET DATA
-            dispatch(
-              setUser({
-                firstName: user.firstName,
-                lastName: user.lastName,
-              })
-            )
-          })
-          navigate(`/auth/user-profile`)
+        if (response.data.body.token) {
+          const token = response.data.body.token
+          if (token) {
+            userService.getUser(token).then((user) => {
+              //UPDATE STORE WITH GET DATA
+              dispatch(
+                setUser({
+                  firstName: user.firstName,
+                  lastName: user.lastName,
+                })
+              )
+            })
+            setMessage("")
+            navigate(`/auth/user-profile`)
+          }
         }
       })
       .catch((error) => {
-        console.log("tu n'es pas authentifié, game over")
+        setMessage("Mauvais identifiants")
         console.log(error)
       })
   }
@@ -111,6 +116,7 @@ export const SignIn: React.FC = () => {
                   component='p'
                   className='errorMessage'
                 />
+                <p>{message}</p>
               </div>
 
               <div>

@@ -23,19 +23,23 @@ export const UserProfile: React.FC = () => {
   const handleSaveClick = async () => {
     const updateFirstName =
       credentials.firstName !== "" ? credentials.firstName : firstName
-
     const updateLastName =
       credentials.lastName !== "" ? credentials.lastName : lastName
-    dispatch(
-      setUser({
+
+    try {
+      dispatch(
+        setUser({
+          firstName: updateFirstName,
+          lastName: updateLastName,
+        })
+      )
+      await userService.updateUser({
         firstName: updateFirstName,
         lastName: updateLastName,
       })
-    )
-    await userService.updateUser({
-      firstName: updateFirstName,
-      lastName: updateLastName,
-    })
+    } catch (err) {
+      console.error("Failed to update user :", err)
+    }
     setIsEditing(false)
   }
   const handleCancelClick = () => {
@@ -74,6 +78,7 @@ export const UserProfile: React.FC = () => {
               value={credentials.firstName}
               onChange={handleChange}
               className='border text-black border-gray-400 rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-green-600'
+              aria-label='First name'
             />
             <input
               type='text'
@@ -82,6 +87,7 @@ export const UserProfile: React.FC = () => {
               value={credentials.lastName}
               onChange={handleChange}
               className='border text-black border-gray-400 rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-green-600'
+              aria-label='Last name'
             />
           </div>
           <div className='flex justify-center gap-2'>
