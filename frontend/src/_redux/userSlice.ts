@@ -9,11 +9,6 @@ const initialState: UserState = storedUser
   ? JSON.parse(storedUser)
   : { firstName: "", lastName: "" }
 
-// const initialState: UserState = {
-//   firstName: "",
-//   lastName: "",
-// }
-
 const userSlice = createSlice({
   name: "user",
   initialState,

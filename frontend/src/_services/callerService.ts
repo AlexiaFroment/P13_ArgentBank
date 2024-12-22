@@ -20,6 +20,5 @@ Axios.interceptors.request.use((request) => {
   } else {
     console.log("Aucun token trouvé, l'utilisateur n'est pas connecté")
   }
-
   return request
 })

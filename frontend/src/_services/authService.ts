@@ -4,9 +4,7 @@ import { Axios } from "./callerService"
 const login = async (data: Credentials, rememberMe: boolean) => {
   try {
     const resp = await Axios.post("/login", data)
-
     const token = resp.data.body.token
-
     saveUserData(token, data.email, rememberMe)
     return resp
   } catch {
@@ -33,11 +31,11 @@ const saveUserData = (token: string, email: string, rememberMe: boolean) => {
   if (rememberMe) {
     localStorage.setItem("token", token)
     localStorage.setItem("email", email)
-    console.log("token & email sont dans le localStorage")
+    // console.log("token & email sont dans le localStorage")
   } else {
     localStorage.removeItem("email")
     sessionStorage.setItem("token", token)
-    console.log("token dans le session storage")
+    // console.log("token dans le session storage")
   }
 }
 
