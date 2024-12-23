@@ -1,7 +1,7 @@
 # Ignorer les fichiers de dépendances Node.js
 node_modules/
 frontend/node_modules/
-!data/dataBank.json
+
 
 # Ignorer les fichiers de configuration de l'IDE
 .vscode
@@ -13,4 +13,3 @@ frontend/node_modules/
 *.swp
 
 # Ignorer le dossier de données
-data/

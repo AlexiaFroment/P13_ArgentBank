@@ -1,0 +1,20 @@
+[
+  {
+    "accountName": "Checkings",
+    "balance": 2082.79,
+    "transactions": 8349,
+    "balanceStatus": "Available"
+  },
+  {
+    "accountName": "Savings",
+    "balance": 10928.429,
+    "transactions": 6712,
+    "balanceStatus": "Available"
+  },
+  {
+    "accountName": "Current",
+    "balance": 184.3,
+    "transactions": 8349,
+    "balanceStatus": "Current"
+  }
+]
