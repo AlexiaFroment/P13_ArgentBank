@@ -112,17 +112,17 @@ paths:
           description: Invalid Fields
         '500':
           description: Internal Server Error
-  /user/{userId}/account/{accountId}/transactions/{monthly}:
+  /user/account/{accountId}/transactions/{monthly}:
     get:
       tags:
         - Transaction Module
       summary: Process Monthly Transactions
       description: API for processing monthly transactions
       parameters:
-        - in: path
-          name: userId
+        - in: header
+          name: Authorization
+          description: Attach Bearer JWT token
           required: true
-          description: ID of the user
           type: string
         - in: path
           name: accountId
@@ -140,32 +140,24 @@ paths:
         '200':
           description: Transactions processed successfully
           schema:
-            $ref: '#/definitions/ApiResponse'
+            $ref: '#/definitions/TransactionsArray'
         '400':
-          description: Invalid Fields
+          description: Invalid monthly period format
+        '404':
+          description: Account not found  
         '500':
           description: Internal Server Error
-  /user/{userId}/account/{accountId}/transactions/{monthly}/{transactionId}:
+  /user/account/transactions/{transactionId}:
     get:
       tags:
         - Transaction Module
       summary: Retrieve a specific transaction
       description: API to fetch information about the transaction identified by `transactionId`.
       parameters:
-        - in: path
-          name: userId
+        - in: header
+          name: Authorization
+          description: Attach Bearer JWT token
           required: true
-          description: ID of the user
-          type: string
-        - in: path
-          name: accountId
-          required: true
-          description: ID of the account
-          type: string
-        - in: path
-          name: monthly
-          required: true
-          description: Monthly period
           type: string
         - in: path
           name: transactionId
@@ -179,50 +171,56 @@ paths:
           description: Successfully retrieved transaction details
           schema:
             $ref: '#/definitions/TransactionDetails'
-        '400':
-          description: Invalid input parameters.
+        '403':
+          description: Unauthorized to access this transaction 
         '404':
           description: Transaction not found.
         '500':
           description: Internal Server Error
-          
     patch:
       tags:
         - Transaction Module
       summary: Update a specific transaction's details
       description: API to partially update a transaction, such as changing the category.
       parameters:
-      - in: path
-        name: userId
+      - in: header
+        name: Authorization
+        description: Attach Bearer JWT token
         required: true
-        description: ID of the user
-        type: string
-      - in: path
-        name: accountId
-        required: true
-        description: ID of the account
-        type: string
-      - in: path
-        name: monthly
-        required: true
-        description: Monthly period (e.g., `2023-12`)
         type: string
       - in: path
         name: transactionId
         required: true
         description: Unique identifier of the transaction to modify.
         type: string
+      - in: body
+        name: transactionUpdate
+        required: true
+        description: Fields to update in the transaction.
+        schema:
+          type: object
+          properties:
+            transactionType:
+              type: string
+              description: Type of transaction.
+            category:
+              type: string
+              description: The category to assign to the transaction.
+            note:
+              type: string
+              description: Updated description of the transaction.
       responses:
         '200':
           description: Transaction updated successfully.
           schema:
             $ref: '#/definitions/TransactionDetails'
-        '400':
-          description: Invalid input data.
+        '403':
+          description: Unauthorized to access this transaction 
         '404':
           description: Transaction not found.
         '500':
           description: Internal Server Error
+
 securityDefinitions:
   Bearer:
     type: apiKey
@@ -243,38 +241,38 @@ definitions:
       lastName:
         type: string
         description: user last name
-  TransactionDetails:
+  TransactionsArray:
+      type: array
+      items:
         type: object
         properties:
-            accountId:
-                type: number
-            availableAmount:
-                type: number
-            transactions:
-                type: array
-                items:
-                    type: object
-                    properties:
-                        transactionId:
-                            type: string
-                        date:
-                            type: string
-                            format: date
-                        description:
-                            type: string
-                        amount:
-                            type: number
-                        details:
-                            type: object
-                            properties:
-                                transactionId:
-                                    type: string
-                                transactionType:
-                                    type: string
-                                category:
-                                    type: string
-                                notes:
-                                    type: string
+            transactionId:
+              type: string
+            date:
+              type: string
+            description:
+              type: string
+            amount:
+              type: number
+  TransactionDetails:
+    properties:
+      accountId:
+        type: number
+      transactionId:
+        type: string
+      date:
+        type: string
+        format: date
+      description:
+        type: string
+      amount:
+        type: number
+      transactionType:
+        type: string
+      category:
+        type: string
+      notes:
+        type: string
   Login:
     properties:
       email:
