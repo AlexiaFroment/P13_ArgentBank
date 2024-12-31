@@ -244,16 +244,7 @@ definitions:
   TransactionsArray:
       type: array
       items:
-        type: object
-        properties:
-            transactionId:
-              type: string
-            date:
-              type: string
-            description:
-              type: string
-            amount:
-              type: number
+        $ref: '#/definitions/TransactionDetails'
   TransactionDetails:
     properties:
       accountId:

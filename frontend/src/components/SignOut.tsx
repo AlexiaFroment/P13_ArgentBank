@@ -1,29 +1,33 @@
-import { useState } from "react"
-import { useNavigate } from "react-router-dom"
-import { useSelector } from "react-redux"
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
-import { RootState } from "@/_redux/store"
-import { authService } from "@/_services"
-import { FaSignOutAlt } from "react-icons/fa"
-import { IoPersonCircleSharp } from "react-icons/io5"
-import { SignIn } from "@/components/SignIn"
+import { AppDispatch } from "@/_redux/store";
+import { useDispatch } from "react-redux";
+import { RootState } from "@/_redux/store";
+import { authService } from "@/_services";
+import { FaSignOutAlt } from "react-icons/fa";
+import { IoPersonCircleSharp } from "react-icons/io5";
+import { SignIn } from "@/components/SignIn";
 
 export const SignOut: React.FC = () => {
-  const [isLoggedOut, setIsLoggedOut] = useState(false)
-  const firstName = useSelector((state: RootState) => state.user.firstName)
-  const navigate = useNavigate()
+  const [isLoggedOut, setIsLoggedOut] = useState(false);
+  const firstName = useSelector((state: RootState) => state.user.firstName);
+  const dispatch = useDispatch<AppDispatch>();
+  const navigate = useNavigate();
+
   const logout = () => {
-    authService.logout()
-    setIsLoggedOut(true)
-    navigate("/home")
-  }
+    authService.logout(dispatch);
+    setIsLoggedOut(true);
+    navigate("/home");
+  };
 
   if (isLoggedOut) {
-    return <SignIn />
+    return <SignIn />;
   }
   const goToUserProfile = () => {
-    navigate(`/auth/user-profile`)
-  }
+    navigate(`/auth/user-profile`);
+  };
   return (
     <li className=' px-5'>
       <div className='flex items-center font-bold px-1'>
@@ -36,5 +40,5 @@ export const SignOut: React.FC = () => {
         <button onClick={logout}>Sign Out</button>
       </div>
     </li>
-  )
-}
+  );
+};

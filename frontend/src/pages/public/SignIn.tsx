@@ -1,54 +1,55 @@
-import { useNavigate } from "react-router-dom"
-import { Formik, Form, Field, ErrorMessage } from "formik"
-import * as Yup from "yup"
-import { useDispatch } from "react-redux"
+import { useNavigate } from "react-router-dom";
+import { Formik, Form, Field, ErrorMessage } from "formik";
+import * as Yup from "yup";
+import { useDispatch } from "react-redux";
 
-import { AppDispatch } from "@/_redux/store"
-import { setUser } from "@/_redux/userSlice"
-import { authService } from "@/_services"
-import { userService } from "@/_services"
-import { Credentials } from "@/_interfaces/Interface"
-import { IoPersonCircleSharp } from "react-icons/io5"
-import { useState } from "react"
+import { AppDispatch } from "@/_redux/store";
+import { setUser } from "@/_redux/userSlice";
+import { authService } from "@/_services";
+import { userService } from "@/_services";
+import { Credentials } from "@/_interfaces/Interface";
+import { IoPersonCircleSharp } from "react-icons/io5";
+import { useState } from "react";
 
 type SignInFormData = {
-  email: string
-  password: string
-  rememberMe: boolean
-}
+  email: string;
+  password: string;
+  rememberMe: boolean;
+};
 export const SignIn: React.FC = () => {
-  const [message, setMessage] = useState("")
-  const dispatch = useDispatch<AppDispatch>()
-  const navigate = useNavigate()
+  const [message, setMessage] = useState("");
+  const dispatch = useDispatch<AppDispatch>();
+  const navigate = useNavigate();
 
   const getInitialValues = (): SignInFormData => {
-    const email = localStorage.getItem("email") || ""
-    const rememberMe = !!localStorage.getItem("email")
+    const email = localStorage.getItem("email") || "";
+    const rememberMe = !!localStorage.getItem("email");
     return {
       email,
       password: "",
       rememberMe,
-    }
-  }
+    };
+  };
 
   const validationSchema = Yup.object().shape({
     email: Yup.string()
       .email("Veuillez entrer une adresse email valide")
       .required("Veuillez entrer votre adresse email"),
     password: Yup.string().required("Veuillez entrer un mot de passe"),
-  })
+  });
 
   const onSubmit = (data: SignInFormData) => {
-    console.log("etat de rememberMe", data.rememberMe)
+    console.log("etat de rememberMe", data.rememberMe);
+    localStorage.setItem("rememberme", `${data.rememberMe}`);
     const credentials: Credentials = {
       email: data.email,
       password: data.password,
-    }
+    };
     authService
-      .login(credentials, data.rememberMe)
+      .login(credentials, data.rememberMe, dispatch)
       .then((response) => {
         if (response.data.body.token) {
-          const token = response.data.body.token
+          const token = response.data.body.token;
           if (token) {
             userService.getUser(token).then((user) => {
               //UPDATE STORE WITH GET DATA
@@ -57,18 +58,18 @@ export const SignIn: React.FC = () => {
                   firstName: user.firstName,
                   lastName: user.lastName,
                 })
-              )
-            })
-            setMessage("")
-            navigate(`/auth/user-profile`)
+              );
+            });
+            setMessage("");
+            navigate(`/auth/user-profile`);
           }
         }
       })
       .catch((error) => {
-        setMessage("Mauvais identifiants")
-        console.log(error)
-      })
-  }
+        setMessage("Mauvais identifiants");
+        console.log(error);
+      });
+  };
 
   return (
     <section className='flex-grow bg-blue-950 p-10'>
@@ -142,5 +143,5 @@ export const SignIn: React.FC = () => {
         </Formik>
       </div>
     </section>
-  )
-}
+  );
+};
