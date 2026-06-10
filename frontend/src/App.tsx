@@ -5,7 +5,7 @@ import { AuthGuard } from "@/_helpers/AuthGuard"
 
 export const App: React.FC = () => {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename='/P13_ArgentBank'>
       <Routes>
         <Route path='/*' element={<PublicRouter />} />
         <Route
