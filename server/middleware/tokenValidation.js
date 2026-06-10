@@ -1,5 +1,4 @@
 const jwt = require("jsonwebtoken")
-const { restart } = require("nodemon")
 
 module.exports.validateToken = (req, res, next) => {
   let response = {}
@@ -12,7 +11,7 @@ module.exports.validateToken = (req, res, next) => {
     const userToken = req.headers.authorization.split("Bearer")[1].trim()
     const decodedToken = jwt.verify(
       userToken,
-      process.env.SECRET_KEY || "default-secret-key"
+      process.env.SECRET_KEY || "default-secret-key",
     )
     return next()
   } catch (error) {
