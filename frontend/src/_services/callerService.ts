@@ -3,7 +3,7 @@ import axios from "axios"
 import { authService } from "@/_services"
 
 export const Axios = axios.create({
-  baseURL: "http://localhost:3001/api/v1/user",
+  baseURL: "https://p13-argentbank-15b4.onrender.com/api/v1/user",
   headers: {
     "Access-Control-Allow-Origin": "*",
   },
